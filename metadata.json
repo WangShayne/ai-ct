@@ -1,0 +1,5 @@
+{
+  "name": "MediScan AI",
+  "description": "An intelligent medical image analysis application allowing users to upload scans, view AI-generated reports, manage health profiles, and track medical history.",
+  "requestFramePermissions": []
+}

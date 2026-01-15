@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
-import '../../models/notification.dart' as models;
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});

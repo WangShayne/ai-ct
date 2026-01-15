@@ -11,7 +11,7 @@ class BottomNavScaffold extends StatelessWidget {
   });
   
   int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).location;
+    final location = GoRouterState.of(context).uri.path;
     if (location.startsWith('/files')) return 1;
     if (location.startsWith('/profile')) return 2;
     return 0;

@@ -17,47 +17,116 @@ class BottomNavScaffold extends StatelessWidget {
     return 0;
   }
   
+  void _onItemTapped(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        context.go('/');
+        break;
+      case 1:
+        context.go('/files');
+        break;
+      case 2:
+        context.go('/profile');
+        break;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     final selectedIndex = _calculateSelectedIndex(context);
     
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go('/');
-              break;
-            case 1:
-              context.go('/files');
-              break;
-            case 2:
-              context.go('/profile');
-              break;
-          }
-        },
-        activeColor: AppColors.primary,
-        inactiveColor: AppColors.textTertiary,
-        backgroundColor: AppColors.surface,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.home),
-            label: 'Home',
+    return CupertinoPageScaffold(
+      child: Stack(
+        children: [
+          // Main content area with bottom padding for tab bar
+          Positioned.fill(
+            bottom: 83, // CupertinoTabBar height + safe area
+            child: child,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.folder),
-            label: 'Files',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings),
-            label: 'Settings',
+          // Bottom navigation bar
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                border: Border(
+                  top: BorderSide(
+                    color: AppColors.borderLight,
+                    width: 0.5,
+                  ),
+                ),
+              ),
+              child: SafeArea(
+                top: false,
+                child: SizedBox(
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildNavItem(
+                        context,
+                        index: 0,
+                        icon: CupertinoIcons.home,
+                        label: 'Home',
+                        isSelected: selectedIndex == 0,
+                      ),
+                      _buildNavItem(
+                        context,
+                        index: 1,
+                        icon: CupertinoIcons.folder,
+                        label: 'Files',
+                        isSelected: selectedIndex == 1,
+                      ),
+                      _buildNavItem(
+                        context,
+                        index: 2,
+                        icon: CupertinoIcons.settings,
+                        label: 'Settings',
+                        isSelected: selectedIndex == 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
-      tabBuilder: (context, index) {
-        return child;
-      },
+    );
+  }
+  
+  Widget _buildNavItem(
+    BuildContext context, {
+    required int index,
+    required IconData icon,
+    required String label,
+    required bool isSelected,
+  }) {
+    final color = isSelected ? AppColors.primary : AppColors.textTertiary;
+    
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => _onItemTapped(context, index),
+      child: SizedBox(
+        width: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 10,
+                color: color,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

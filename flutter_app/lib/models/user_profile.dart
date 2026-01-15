@@ -3,6 +3,7 @@ class UserProfile {
   final String id;
   final int joinDays;
   final String? avatar;
+  final String? avatarUrl;
   final String? gender;
   final String? birthday;
   final String? phone;
@@ -15,6 +16,7 @@ class UserProfile {
     required this.id,
     required this.joinDays,
     this.avatar,
+    this.avatarUrl,
     this.gender,
     this.birthday,
     this.phone,
@@ -25,10 +27,11 @@ class UserProfile {
   
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      name: json['name'] as String,
-      id: json['id'] as String,
-      joinDays: json['join_days'] as int,
+      name: json['name'] as String? ?? '',
+      id: json['id'] as String? ?? '',
+      joinDays: json['join_days'] as int? ?? 0,
       avatar: json['avatar'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
       gender: json['gender'] as String?,
       birthday: json['birthday'] as String?,
       phone: json['phone'] as String?,
@@ -43,6 +46,7 @@ class UserProfile {
     'id': id,
     'join_days': joinDays,
     'avatar': avatar,
+    'avatar_url': avatarUrl,
     'gender': gender,
     'birthday': birthday,
     'phone': phone,
@@ -50,4 +54,33 @@ class UserProfile {
     'weight': weight,
     'blood_type': bloodType,
   };
+
+  /// Create a copy with updated fields
+  UserProfile copyWith({
+    String? name,
+    String? id,
+    int? joinDays,
+    String? avatar,
+    String? avatarUrl,
+    String? gender,
+    String? birthday,
+    String? phone,
+    int? height,
+    int? weight,
+    String? bloodType,
+  }) {
+    return UserProfile(
+      name: name ?? this.name,
+      id: id ?? this.id,
+      joinDays: joinDays ?? this.joinDays,
+      avatar: avatar ?? this.avatar,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      gender: gender ?? this.gender,
+      birthday: birthday ?? this.birthday,
+      phone: phone ?? this.phone,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+      bloodType: bloodType ?? this.bloodType,
+    );
+  }
 }
